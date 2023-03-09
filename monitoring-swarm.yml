@@ -46,6 +46,8 @@ services:
     volumes:
       - grafana-data:/var/lib/grafana
     restart: unless-stopped
+    networks:
+      - monitoring
   
   prometheus:
     image: prom/prometheus:v2.42.0
@@ -58,6 +60,8 @@ services:
     restart: unless-stopped
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+    networks:
+      - monitoring
     deploy:
       mode: replicated
       replicas: 1

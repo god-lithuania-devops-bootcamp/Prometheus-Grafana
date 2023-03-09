@@ -45,6 +45,11 @@ services:
     restart: unless-stopped
     command:
       - "--config.file=/etc/prometheus/prometheus.yml"
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.hostname == ubuntu-01]
   
   node-exporter:
     image: prom/node-exporter:v1.5.0

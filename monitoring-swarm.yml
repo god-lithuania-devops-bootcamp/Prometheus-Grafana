@@ -6,6 +6,11 @@ volumes:
     driver: local
   prometheus-data:
     driver: local
+
+networks:
+  monitoring:
+    driver: overlay
+    attachable: true
   
 services:
   cadvisor:
@@ -13,6 +18,8 @@ services:
     container_name: cadvisor
     ports:
       - "8080:8080"
+    networks:
+      - monitoring
     network_mode: host
     volumes:
       - /:/rootfs:ro
@@ -24,6 +31,12 @@ services:
       - /dev/kmsg
     restart: unless-stopped
     privileged: true
+    deploy:
+      mode: global # run one instance on each node
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
   
   grafana:
     image: grafana/grafana-oss:latest
@@ -53,10 +66,15 @@ services:
   
   node-exporter:
     image: prom/node-exporter:v1.5.0
-    container_name: node_exporter
+    container_name: node-exporter
     command:
       - '--path.rootfs=/host'
     pid: host
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
+    networks:
+      - monitoring
+    network_mode: host
+    deploy:
+      mode: global

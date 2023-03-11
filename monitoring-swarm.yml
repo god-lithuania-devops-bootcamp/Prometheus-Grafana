@@ -18,9 +18,9 @@ services:
     container_name: cadvisor
     ports:
       - "8080:8080"
-    networks:
-      - monitoring
-    network_mode: host
+    # networks:
+    #   - monitoring
+    # network_mode: host
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -32,12 +32,31 @@ services:
     restart: unless-stopped
     privileged: true
     deploy:
-      mode: global # run one instance on each node
+      mode: global
+      labels:
+        - "prometheus-job=cadvisor"
       resources:
         limits:
           cpus: '0.5'
           memory: 256M
   
+  node-exporter:
+    image: prom/node-exporter:v1.5.0
+    container_name: node-exporter
+    command:
+      - '--path.rootfs=/host'
+    pid: host
+    restart: unless-stopped
+    volumes:
+      - '/:/host:ro,rslave'
+    # networks:
+    #   - monitoring
+    # network_mode: host
+    deploy:
+      mode: global
+      labels:
+        - "prometheus-job=node-exporter"
+
   grafana:
     image: grafana/grafana-oss:latest
     container_name: grafana
@@ -55,11 +74,9 @@ services:
     ports:
       - "9090:9090"
     volumes:
-      - /home/ksaleki/Prometheus-Granafa/prometheus:/etc/prometheus
+      - /home/ksaleki/Prometheus-Granafa/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
     restart: unless-stopped
-    command:
-      - "--config.file=/etc/prometheus/prometheus.yml"
     networks:
       - monitoring
     deploy:
@@ -68,17 +85,4 @@ services:
       placement:
         constraints: [node.hostname == ubuntu-01]
   
-  node-exporter:
-    image: prom/node-exporter:v1.5.0
-    container_name: node-exporter
-    command:
-      - '--path.rootfs=/host'
-    pid: host
-    restart: unless-stopped
-    volumes:
-      - '/:/host:ro,rslave'
-    networks:
-      - monitoring
-    network_mode: host
-    deploy:
-      mode: global
+  

@@ -15,12 +15,9 @@ networks:
 services:
   cadvisor:
     image: gcr.io/cadvisor/cadvisor:v0.47.1    
-    container_name: cadvisor
+    # container_name: cadvisor
     ports:
       - "8080:8080"
-    # networks:
-    #   - monitoring
-    # network_mode: host
     volumes:
       - /:/rootfs:ro
       - /var/run:/var/run:ro
@@ -42,16 +39,15 @@ services:
   
   node-exporter:
     image: prom/node-exporter:v1.5.0
-    container_name: node-exporter
+    # container_name: node-exporter
     command:
       - '--path.rootfs=/host'
     pid: host
     restart: unless-stopped
     volumes:
       - '/:/host:ro,rslave'
-    # networks:
-    #   - monitoring
-    # network_mode: host
+    ports:
+      - "9100:9100"
     deploy:
       mode: global
       labels:
@@ -59,7 +55,7 @@ services:
 
   grafana:
     image: grafana/grafana-oss:latest
-    container_name: grafana
+    # container_name: grafana
     ports:
       - "3000:3000"
     volumes:
@@ -69,13 +65,14 @@ services:
       - monitoring
   
   prometheus:
-    image: prom/prometheus:v2.42.0
-    container_name: prometheus
+    image: prom/prometheus:v2.43.0-rc.0
+    # container_name: prometheus
     ports:
       - "9090:9090"
     volumes:
       - /home/ksaleki/Prometheus-Granafa/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
       - prometheus-data:/prometheus
+      - /home/ksaleki/Prometheus-Granafa/prometheus/targets.json:/etc/prometheus/targets.json
     restart: unless-stopped
     networks:
       - monitoring

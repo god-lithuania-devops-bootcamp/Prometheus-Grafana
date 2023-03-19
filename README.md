@@ -62,7 +62,7 @@ network:
 ```
 
 ## Bootstrap a 3-Node Kubernetes Cluster using Vagrant VM Environment
-_TODO: Add instructions for setting up a 3-node Kubernetes cluster using the kubeadm way in a Vagrant VM environment.
+_TODO_: Add instructions for setting up a 3-node Kubernetes cluster using the kubeadm way in a Vagrant VM environment.
 
 ## Configure Local kubectl to Access Remote Kubernetes Cluster
 For a detailed guide on how to configure your local kubectl to access a remote Kubernetes cluster, refer to the following article on DEV Community:

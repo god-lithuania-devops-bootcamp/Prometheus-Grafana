@@ -27,8 +27,8 @@ vagrant up
 Enable IP forwarding by editing /etc/sysctl.conf:
 ```bash
 net.ipv4.ip_forward=1
-Apply the changes:
 ```
+Apply the changes:
 ```bash
 sudo sysctl -p
 ```
@@ -47,14 +47,14 @@ sudo iptables-save | sudo tee /etc/iptables/rules.v4
 ```
 Configure the VMs on the VirtualBox private network (192.168.56.0/24) to use the Ubuntu 22.04 machine as their default gateway by modifying the /etc/netplan/xx-netcfg.yaml file on each VM:
 
-Replace 192.168.56.X with the IP address of the VM:
+Replace "192.168.56.x" with the IP address of the VM:
 ```yaml
 network:
   version: 2
   ethernets:
     enp0s8:
       dhcp4: no
-      addresses: [192.168.56.X/24]
+      addresses: [192.168.56.x/24]
       gateway4: 192.168.56.1
       nameservers:
         addresses: [8.8.8.8, 8.8.4.4]

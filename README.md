@@ -19,6 +19,7 @@ node.vm.network "public_network", bridge: "br0"
 ```
 Destroy existing Vagrant VMs and recreate them with the modified Vagrantfile:
 ```bash
+vagrant destroy -f
 vagrant up
 ```
 **Note**: This method is destructive and requires recreating all Vagrant VMs with the modified Vagrantfile.

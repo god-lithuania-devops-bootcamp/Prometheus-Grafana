@@ -10,15 +10,15 @@ Create a bridge interface (br0) using Netplan YAML files located in `/etc/netpla
 Modify your Vagrantfile network configuration as follows:
 
 Replace:
-```bash
+```sh
 config.vm.network :private_network
 ```
 With:
-```bash
+```sh
 node.vm.network "public_network", bridge: "br0"
 ```
 Destroy existing Vagrant VMs and recreate them with the modified Vagrantfile:
-```bash
+```sh
 vagrant destroy -f
 vagrant up
 ```
@@ -26,24 +26,24 @@ vagrant up
 
 ### 2. Create a NAT Rule (Non-destructive)
 Enable IP forwarding by editing `/etc/sysctl.conf`:
-```bash
+```sh
 net.ipv4.ip_forward=1
 ```
 Apply the changes:
-```bash
+```sh
 sudo sysctl -p
 ```
 Update packages and install `iptables-persistent`:
-```bash
+```sh
 sudo apt-get update
 sudo apt-get install -y iptables-persistent
 ```
 Create a NAT rule:
-```bash
+```sh
 sudo iptables -t nat -A POSTROUTING -s 192.168.56.0/24 -o your_interface_name -j MASQUERADE
 ```
 Save the `iptables` configuration:
-```bash
+```sh
 sudo iptables-save | sudo tee /etc/iptables/rules.v4
 ```
 Configure the VMs on the VirtualBox private network `192.168.56.0/24` to use the Ubuntu 22.04 machine as their default gateway by modifying the `/etc/netplan/xx-netcfg.yaml` file on each VM:

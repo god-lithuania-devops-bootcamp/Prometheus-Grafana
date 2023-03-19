@@ -24,17 +24,29 @@ data:
             regex: (.+):(.+)
             replacement: ${1}:8080
             target_label: __address__
+      # - job_name: "node-exporter"
+      #   kubernetes_sd_configs:
+      #     - role: endpoints
+      #   relabel_configs:
+      #     - action: keep
+      #       source_labels: [__meta_kubernetes_service_name]
+      #       regex: <node_exporter_service_name>
+      #     - action: replace
+      #       source_labels: [__address__]
+      #       target_label: instance
       - job_name: "node-exporter"
         kubernetes_sd_configs:
-          - role: endpoints
+          - role: pod
         relabel_configs:
           - action: keep
-            source_labels: [__meta_kubernetes_service_name]
-            regex: <node_exporter_service_name>
+            source_labels: [__meta_kubernetes_pod_label_app]
+            regex: node-exporter
           - action: replace
             source_labels: [__address__]
-            target_label: instance
-  
+            regex: (.+):(.+)
+            replacement: ${1}:9100
+            target_label: __address__
+
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -117,7 +129,7 @@ spec:
         app: node-exporter
     spec:
       tolerations:
-      - key: node-role.kubernetes.io/master
+      - key: node-role.kubernetes.io/control-plane
         effect: NoSchedule
       hostPID: true
       containers:
@@ -153,7 +165,7 @@ spec:
         app: cadvisor
     spec:
       tolerations:
-      - key: node-role.kubernetes.io/master
+      - key: node-role.kubernetes.io/control-plane
         effect: NoSchedule
       hostPID: true
       containers:

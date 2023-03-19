@@ -4,62 +4,62 @@ Instructions for accessing Vagrant VMs externally from my home LAN and setting u
 ## Accessing Vagrant VMs Externally from Home LAN
 There are two methods to access Vagrant VMs externally from your home LAN:
 
-### 1. Create a Bridge Interface
-Create a bridge interface (br0) using Netplan YAML files located in `/etc/netplan/...` on your Vagrant host.
+        ### 1. Create a Bridge Interface
+        Create a bridge interface (br0) using Netplan YAML files located in `/etc/netplan/...` on your Vagrant host.
 
-Modify your Vagrantfile network configuration as follows:
+        Modify your Vagrantfile network configuration as follows:
 
-Replace:
-```bash
-config.vm.network :private_network
-```
-With:
-```bash
-node.vm.network "public_network", bridge: "br0"
-```
-Destroy existing Vagrant VMs and recreate them with the modified Vagrantfile:
-```bash
-vagrant destroy -f
-vagrant up
-```
-**Note**: This method is destructive and requires recreating all Vagrant VMs with the modified Vagrantfile.
+        Replace:
+        ```bash
+        config.vm.network :private_network
+        ```
+        With:
+        ```bash
+        node.vm.network "public_network", bridge: "br0"
+        ```
+        Destroy existing Vagrant VMs and recreate them with the modified Vagrantfile:
+        ```bash
+        vagrant destroy -f
+        vagrant up
+        ```
+        **Note**: This method is destructive and requires recreating all Vagrant VMs with the modified Vagrantfile.
 
-### 2. Create a NAT Rule (Non-destructive)
-Enable IP forwarding by editing `/etc/sysctl.conf`:
-```bash
-net.ipv4.ip_forward=1
-```
-Apply the changes:
-```bash
-sudo sysctl -p
-```
-Update packages and install `iptables-persistent`:
-```bash
-sudo apt-get update
-sudo apt-get install -y iptables-persistent
-```
-Create a NAT rule:
-```bash
-sudo iptables -t nat -A POSTROUTING -s 192.168.56.0/24 -o your_interface_name -j MASQUERADE
-```
-Save the `iptables` configuration:
-```bash
-sudo iptables-save | sudo tee /etc/iptables/rules.v4
-```
-Configure the VMs on the VirtualBox private network `192.168.56.0/24` to use the Ubuntu 22.04 machine as their default gateway by modifying the `/etc/netplan/xx-netcfg.yaml` file on each VM:
+        ### 2. Create a NAT Rule (Non-destructive)
+        Enable IP forwarding by editing `/etc/sysctl.conf`:
+        ```bash
+        net.ipv4.ip_forward=1
+        ```
+        Apply the changes:
+        ```bash
+        sudo sysctl -p
+        ```
+        Update packages and install `iptables-persistent`:
+        ```bash
+        sudo apt-get update
+        sudo apt-get install -y iptables-persistent
+        ```
+        Create a NAT rule:
+        ```bash
+        sudo iptables -t nat -A POSTROUTING -s 192.168.56.0/24 -o your_interface_name -j MASQUERADE
+        ```
+        Save the `iptables` configuration:
+        ```bash
+        sudo iptables-save | sudo tee /etc/iptables/rules.v4
+        ```
+        Configure the VMs on the VirtualBox private network `192.168.56.0/24` to use the Ubuntu 22.04 machine as their default gateway by modifying the `/etc/netplan/xx-netcfg.yaml` file on each VM:
 
-Replace "192.168.56.x" with the IP address of the VM:
-```yaml
-network:
-  version: 2
-  ethernets:
-    enp0s8:
-      dhcp4: no
-      addresses: [192.168.56.x/24]
-      gateway4: 192.168.56.1
-      nameservers:
-        addresses: [8.8.8.8, 8.8.4.4]
-```
+        Replace "192.168.56.x" with the IP address of the VM:
+        ```yaml
+        network:
+          version: 2
+          ethernets:
+            enp0s8:
+              dhcp4: no
+              addresses: [192.168.56.x/24]
+              gateway4: 192.168.56.1
+              nameservers:
+                addresses: [8.8.8.8, 8.8.4.4]
+        ```
 
 ## Bootstrap a 3-Node Kubernetes Cluster using Vagrant VM Environment
 _TODO_: Add instructions for setting up a 3-node Kubernetes cluster using the kubeadm way in a Vagrant VM environment.

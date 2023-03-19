@@ -5,7 +5,7 @@ Instructions for accessing Vagrant VMs externally from my home LAN and setting u
 There are two methods to access Vagrant VMs externally from your home LAN:
 
 ### 1. Create a Bridge Interface
-Create a bridge interface (br0) using Netplan YAML files located in /etc/netplan/... on your Vagrant host.
+Create a bridge interface (br0) using Netplan YAML files located in `/etc/netplan/...` on your Vagrant host.
 
 Modify your Vagrantfile network configuration as follows:
 
@@ -25,7 +25,7 @@ vagrant up
 **Note**: This method is destructive and requires recreating all Vagrant VMs with the modified Vagrantfile.
 
 ### 2. Create a NAT Rule (Non-destructive)
-Enable IP forwarding by editing /etc/sysctl.conf:
+Enable IP forwarding by editing `/etc/sysctl.conf`:
 ```bash
 net.ipv4.ip_forward=1
 ```
@@ -33,7 +33,7 @@ Apply the changes:
 ```bash
 sudo sysctl -p
 ```
-Update packages and install iptables-persistent:
+Update packages and install `iptables-persistent`:
 ```bash
 sudo apt-get update
 sudo apt-get install -y iptables-persistent
@@ -42,11 +42,11 @@ Create a NAT rule:
 ```bash
 sudo iptables -t nat -A POSTROUTING -s 192.168.56.0/24 -o your_interface_name -j MASQUERADE
 ```
-Save the iptables configuration:
+Save the `iptables` configuration:
 ```bash
 sudo iptables-save | sudo tee /etc/iptables/rules.v4
 ```
-Configure the VMs on the VirtualBox private network (192.168.56.0/24) to use the Ubuntu 22.04 machine as their default gateway by modifying the /etc/netplan/xx-netcfg.yaml file on each VM:
+Configure the VMs on the VirtualBox private network `192.168.56.0/24` to use the Ubuntu 22.04 machine as their default gateway by modifying the `/etc/netplan/xx-netcfg.yaml` file on each VM:
 
 Replace "192.168.56.x" with the IP address of the VM:
 ```yaml

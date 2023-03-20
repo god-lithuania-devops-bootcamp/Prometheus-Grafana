@@ -1,4 +1,6 @@
-# Vagrant VM Access and Kubernetes Cluster Configuration
+# Monitoring Stack using Prometheus and Grafana (Swarm and k8s)
+
+## Vagrant VM Access and Kubernetes Cluster Configuration
 Instructions for accessing Vagrant VMs externally from my home LAN and setting up a 3-node Kubernetes cluster using Vagrant VM environment. Additionally, it includes a resource for configuring a local kubectl to access a remote Kubernetes cluster.
 
 ## Accessing Vagrant VMs Externally from Home LAN

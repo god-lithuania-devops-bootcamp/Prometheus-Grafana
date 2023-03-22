@@ -84,15 +84,21 @@ vagrant halt
 
 -- click on the "containerd" section
    > open the "getting started with containerd" link which goes to it's GitHub page
+   
    > - install containerd using apt. it's using the docker page as source. just be careful to install ONLY "containerd.io" package.
+   
    > - systemctl status containerd  --> is it "active" & "running" with no error logs !?
    
    > read through Cgroup drivers section. note that both kubelet and container runtime need to interface with Cgroups to perform various resource management and constraint tasks.
+  
    > "cgroupfs" is the default driver, however if you use a systemd system, you have to use the "systemd" driver. Also note that both container runtime and kubelet should use the same driver on the node.
-     >- `ps -p 1`   
+   
+   >- `ps -p 1`   
 // gonna show systemd, if this system uses systemd 
-     >- "containerd" section  -->  Configure the systemd cgroup driver  --> apply the proposed changes (`sudo vim /etc/containerd/config.toml`). delete all existing config and paste the new config. Note that you gotta do this for all nodes.
-     >- `sudo systemctl restart containerd`
+  
+   >- "containerd" section  -->  Configure the systemd cgroup driver  --> apply the proposed changes (`sudo vim /etc/containerd/config.toml`). delete all existing config and paste the new config. Note that you gotta do this for all nodes.
+ 
+   >- `sudo systemctl restart containerd`
 
 ### 3- Install and prepare Kubeadm
 -- go to "Install kubeadm, kubelet and kubectl" section

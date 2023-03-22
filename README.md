@@ -117,7 +117,7 @@ vagrant halt
 >- `k edit ds weavenet -n kube-system`   
 // instructions are available in Weavenet installation page  -->  Changing Configuration Options
 
--- Join the other nodes to the cluster
+-- Finally, Join the other nodes to the cluster
 
 ## Configure Local kubectl to Access Remote Kubernetes Cluster
 For a detailed guide on how to configure your local kubectl to access a remote Kubernetes cluster, refer to the following article on DEV Community:

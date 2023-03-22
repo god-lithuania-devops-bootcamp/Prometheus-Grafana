@@ -81,6 +81,7 @@ vagrant halt
 - Container runtime requirements: [Container Runtimes | Kubernetes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
 
 -- Forwarding IPv4 and letting iptables see bridge traffic  -->  Apply all commands shown here on all nodes
+
 -- click on the "containerd" section
    > open the "getting started with containerd" link which goes to it's GitHub page
    > - install containerd using apt. it's using the docker page as source. just be careful to install ONLY "containerd.io" package.
@@ -90,8 +91,8 @@ vagrant halt
    > "cgroupfs" is the default driver, however if you use a systemd system, you have to use the "systemd" driver. Also note that both container runtime and kubelet should use the same driver on the node.
      >- `ps -p 1`   
 // gonna show systemd, if this system uses systemd 
-     >- "containerd" section  -->  Configure the systemd cgroup driver  --> apply the proposed changes (sudo vim /etc/containerd/config.toml). delete all existing config and paste the new config. Note that you gotta do this for all nodes.
-     >- sudo systemctl restart containerd
+     >- "containerd" section  -->  Configure the systemd cgroup driver  --> apply the proposed changes (`sudo vim /etc/containerd/config.toml`). delete all existing config and paste the new config. Note that you gotta do this for all nodes.
+     >- `sudo systemctl restart containerd`
 
 ### 3- Install and prepare Kubeadm
 -- go to "Install kubeadm, kubelet and kubectl" section
@@ -99,15 +100,15 @@ vagrant halt
 
 -- go to the "What's next" section down at the bottom of the page. (Create a cluster page)
 >- read through "Initializing your control-plane node"
->- on master node: sudo kubeadm init --pod-network-cidr=10.20.0.0/16 >-apiserver-advertise-address=192.168.56.2
+>- on master node: `sudo kubeadm init --pod-network-cidr=10.20.0.0/16 >-apiserver-advertise-address=192.168.56.2`
 >- make sure to run the commands instructed at the end of the kubeadm initiation process AND copy and save the join command somewhere safe.
 
 ### 4- Install CNI for the cluster
 -- It's now time to install CNI: follow the link provided in kubeadm output to install Addons
 >- Install Weavenet: just one command and it will install Weavenet Daemonset in kube-system ns
->- k get ds -A    
+>- `k get ds -A`  
 // we now have to modify the weavent daemonset and introduce the pod-cidr to weavenet
->- k edit ds weavenet -n kube-system    
+>- `k edit ds weavenet -n kube-system`   
 // instructions are available in Weavenet installation page  -->  Changing Configuration Options
 
 -- Join the other nodes to the cluster

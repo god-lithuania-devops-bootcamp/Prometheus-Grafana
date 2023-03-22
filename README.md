@@ -79,6 +79,7 @@ vagrant halt
 ### 2- Prepare container runtime and systemd drivers on cluster nodes
 - Start here: [Installing kubeadm | Kubernetes](https://kubernetes.io/docs/setup/production-environment/tools/kubeadm/install-kubeadm/)
 - Container runtime requirements: [Container Runtimes | Kubernetes](https://kubernetes.io/docs/setup/production-environment/container-runtimes/)
+
 -- Forwarding IPv4 and letting iptables see bridge traffic  -->  Apply all commands shown here on all nodes
 -- click on the "containerd" section
    > open the "getting started with containerd" link which goes to it's GitHub page

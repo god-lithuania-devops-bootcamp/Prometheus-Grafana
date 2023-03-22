@@ -88,7 +88,7 @@ vagrant halt
    
    > read through Cgroup drivers section. note that both kubelet and container runtime need to interface with Cgroups to perform various resource management and constraint tasks.
    > "cgroupfs" is the default driver, however if you use a systemd system, you have to use the "systemd" driver. Also note that both container runtime and kubelet should use the same driver on the node.
-     >- ps -p 1   
+     >- `ps -p 1`   
 // gonna show systemd, if this system uses systemd 
      >- "containerd" section  -->  Configure the systemd cgroup driver  --> apply the proposed changes (sudo vim /etc/containerd/config.toml). delete all existing config and paste the new config. Note that you gotta do this for all nodes.
      >- sudo systemctl restart containerd

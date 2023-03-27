@@ -1,5 +1,5 @@
 # Monitoring Stack using Helm Operators
-# Prometheus, Grafana, Promtail, Loki, and Komodor included
+## Prometheus, Alert-manager, Node-Exporter, Grafana, Promtail, Loki, and Komodor included
 
 # Installation
 

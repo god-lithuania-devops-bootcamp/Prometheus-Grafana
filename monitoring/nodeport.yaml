@@ -14,7 +14,6 @@ spec:
     port: 9090
     targetPort: web
 
-
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +27,5 @@ spec:
   type: NodePort
   ports:
   - name: http
-    port: 3000
+    port: 80
     targetPort: http

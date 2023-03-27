@@ -1,4 +1,5 @@
-# Monitoring Stack using Helm Operators - With Promtail, Loki and Komodor included
+# Monitoring Stack using Helm Operators
+# Prometheus, Grafana, Promtail, Loki, and Komodor included
 
 # Installation
 

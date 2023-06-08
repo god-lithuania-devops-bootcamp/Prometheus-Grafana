@@ -1,0 +1,9 @@
+# My custom values for redis exporter to monitor the redis instance in the Google microservice Sample Application
+serviceAccount:
+  # Specifies whether a ServiceAccount should be created
+  create: true
+  interval: 10s
+  labels:
+    release: monitoring
+
+redisAddress: redis://redis-cart:6379

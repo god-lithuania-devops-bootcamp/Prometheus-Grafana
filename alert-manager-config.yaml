@@ -1,0 +1,32 @@
+apiVersion: monitoring.coreos.com/v1beta1
+kind: AlertmanagerConfig
+metadata:
+  name: main-rules-alert-config
+  namespace: monitoring
+  labels:
+    app: kube-prometheus-stack
+    release: monitoring
+    # promethues operator needs these 2 lables to match with its deployments
+spec:
+  route:
+    reciever: 'email'
+    repeatInterval: 30m
+    routes:
+    - matchers:
+      - name: alertname
+        value: HostHighCpuLoad
+    - matchers:
+      - name: alertname
+        value: KubernetesPodCrashLooping
+      repeatInterval: 10m
+  recievers:
+  - name: 'email'
+    emailConfigs:
+    - to: 'kaveh.saleki@gmail.com'
+      from: 'kaveh.saleki@gmail.com'
+      smarthost: 'smtp.gmail.com:587'
+      authUsername: 'kaveh.saleki@gmail.com'
+      authIdentity: 'kaveh.saleki@gmail.com'
+      authPassword:
+        name: gmail-auth
+        key: password
